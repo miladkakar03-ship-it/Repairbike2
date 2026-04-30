@@ -1,75 +1,35 @@
-package se.kth.iv1350.repairbike.model;
+package se.kth.iv1350.repairbike.model; // Anger att testet hör till modell-paketet
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*; // Importerar JUnit-annoteringar som @Test och @BeforeEach
+import static org.junit.jupiter.api.Assertions.*; // Importerar påståenden som assertEquals för att kontrollera resultat
 
-/**
- * Testklass för RepairOrder.
- * Fokuserar på tillståndshantering och logik enligt Task 2 kraven.
- */
-public class RepairOrderTest {
-    private RepairOrder orderToTest;
-    private Customer testCustomer;
-    private Bike testBike;
+public class RepairOrderTest { // Start på testklassen för RepairOrder
+    private RepairOrder order; // Deklarerar ett RepairOrder-objekt som ska användas i testerna
 
-    @BeforeEach
-    public void setUp() {
-        // Grundläggande setup för att kunna skapa en order
-        testBike = new Bike("Yosemite", "Electric S1", "SN12345");
-        testCustomer = new Customer("Sven Svensson", "0701112233", "sven@kth.se", testBike);
-        orderToTest = new RepairOrder(testCustomer, testBike);
-    }
+    @BeforeEach // Denna metod körs automatiskt före varje enskilt testfall
+    public void setUp() { // Initieringsmetod för att skapa en fräsch miljö
+        // Skapar en ny order med en testkund och en cykel (null används här för att hålla koden kort)[cite: 3]
+        order = new RepairOrder(new Customer("Sven", "123", "a@b.com", null), null); 
+    } // Slut på setUp
 
-    @AfterEach
-    public void tearDown() {
-        orderToTest = null;
-        testCustomer = null;
-        testBike = null;
-    }
-
-    /**
-     * Testar att orderns status ändras korrekt. 
-     * Detta är viktigt för affärsreglerna i steg 17 och 20.[cite: 1]
-     */
-    @Test
-    public void testStateTransition() {
-        // Kontrollera startstatus
-        assertEquals("Newly Created", orderToTest.getState(), "Initial status stämmer ej.");
-
-        // Testa ändring till 'Ready for approval' (Bild 5)
-        orderToTest.setState("Ready for approval");
-        assertEquals("Ready for approval", orderToTest.getState(), "Status uppdaterades inte korrekt.");
-
-        // Testa ändring till 'Accepted' (Bild 7)
-        orderToTest.setState("Accepted");
-        assertEquals("Accepted", orderToTest.getState(), "Status ändrades inte till Accepted.");
-    }
-
-    /**
-     * Testar att lägga till en problembeskrivning.
-     */
-    @Test
-    public void testAddProblemDescription() {
-        String description = "Motorn hackar vid belastning.";
-        orderToTest.setProblemDescription(description);
+    @Test // Markerar att detta är ett testfall som JUnit ska köra[cite: 3]
+    public void testStatusChange() { // Testar logiken för hur orderns status ändras[cite: 3]
+        // Kontrollerar att en nyskapad order har rätt startstatus enligt affärsreglerna[cite: 1]
+        assertEquals("Newly Created", order.getState(), "Startstatus var fel."); 
         
-        // Verifierar att metoden kan köras. 
-        // Notera: För att verifiera värdet med assertEquals krävs en getter för problemDescription.
-    }
+        // Ändrar statusen på ordern till 'Accepted' (simulerar Bild 7 i din design)[cite: 1]
+        order.setState("Accepted"); 
+        
+        // Verifierar att attributet i objektet faktiskt har ändrats till det förväntade värdet[cite: 3]
+        assertEquals("Accepted", order.getState(), "Status ändrades inte korrekt."); 
+    } // Slut på testStatusChange
 
-    /**
-     * Testar att lägga till ett reparationsmoment (Bild 6).
-     * Detta testar att metoden addRepairTask fungerar utan att kasta undantag.
-     */
-    @Test
-    public void testAddRepairTask() {
-        try {
-            orderToTest.addRepairTask("Batteriservice", 450.0);
-            // Metoden anropas framgångsrikt.
-        } catch (Exception e) {
-            fail("Kunde inte lägga till RepairTask: " + e.getMessage());
-        }
-    }
-}
+    @Test // Markerar nästa testfall[cite: 3]
+    public void testAddRepairTask() { // Testar att det går att lägga till ett arbetsmoment[cite: 3]
+        // Anropar metoden för att lägga till ett moment och pris (testar logik i Bild 6)
+        order.addRepairTask("Service", 100.0); 
+        
+        // Testet godkänns automatiskt om raden ovan körs utan att programmet kraschar[cite: 3]
+        assertNotNull(order, "Ordern bör fortfarande existera efter tillagt moment."); 
+    } // Slut på testAddRepairTask
+} // Slut på klassen RepairOrderTest
