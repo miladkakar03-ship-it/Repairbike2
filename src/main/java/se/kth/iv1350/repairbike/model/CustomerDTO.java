@@ -1,14 +1,18 @@
-package se.kth.iv1350.repairbike.model; // Modell-lagret
+package se.kth.iv1350.repairbike.model;
 
-public class CustomerDTO { // Dataöverföringsobjekt för kund
-    private final String name; // Oföränderligt namn
-    private final String phoneNumber; // Oföränderligt nummer
+/**
+ * En oföränderlig databärare för kundinformation. 
+ * Används för att skicka data mellan lager utan att exponera domänobjektet.
+ */
+public class CustomerDTO {
+    private final String name;
+    private final String phoneNumber;
 
-    public CustomerDTO(Customer customer) { // Konstruktor som kopierar data
-        this.name = customer.getName(); // Hämtar namn från det riktiga objektet
-        this.phoneNumber = customer.getPhoneNumber(); // Hämtar nummer
-    } // Slut på konstruktor
+    public CustomerDTO(Customer customer) {
+        this.name = customer.getName();
+        this.phoneNumber = customer.getPhoneNumber();
+    }
 
-    public String getName() { return name; } // Getter för vyn
-    public String getPhoneNumber() { return phoneNumber; } // Getter för kontrollern
-} // Slut på klassen
+    public String getName() { return name; }
+    public String getPhoneNumber() { return phoneNumber; }
+}

@@ -1,46 +1,51 @@
-package se.kth.iv1350.repairbike.model; // Modell-lagret
+package se.kth.iv1350.repairbike.model;
 
-import java.util.ArrayList; // Importerar lista för att lagra moment
-import java.util.List; // Importerar List-interface
+import java.util.ArrayList;
+import java.util.List;
 
-public class RepairOrder { // Representerar hela reparationsärendet
-    private int orderId; // Unikt ID för ordern
-    private Customer customer; // Kunden som äger ordern
-    private Bike bike; // Cykeln som lagas
-    private String problemDescription; // Kundens beskrivning (Bild 4)
-    private String diagnosticReport; // Teknikerns rapport (Bild 5)
-    private String state; // Status: NewlyCreated, ReadyForApproval, Accepted (Bild 3, 5, 7)
-    private List<RepairTask> repairTasks = new ArrayList<>(); // Lista med moment (Bild 6)
+/**
+ * Entitetsklass som håller all information om en reparation.
+ */
+public class RepairOrder {
+    private int orderId;
+    private Customer customer;
+    private Bike bike;
+    private String problemDescription;
+    private String diagnosticReport;
+    private String state;
+    private List<RepairTask> repairTasks = new ArrayList<>();
 
-    public RepairOrder(Customer customer, Bike bike) { // Bild 3, Index 1.1.2: Skapar ordern
-        this.orderId = 1; // Enkel hårdkodad ID för detta exempel
-        this.customer = customer; // Sparar kunden
-        this.bike = bike; // Sparar cykeln
-        this.state = "Newly Created"; // Sätter startstatus (Bild 3)
-    } // Slut på konstruktorn
+    public RepairOrder(Customer customer, Bike bike) {
+        this.orderId = 12345;
+        this.customer = customer;
+        this.bike = bike;
+        this.state = "Newly Created"; // Startstatus enligt Bild 3
+    }
 
-    public void setProblemDescription(String description) { // Bild 4, Index 2.1: Sätter beskrivning
-        this.problemDescription = description; // Sparar texten i attributet
-    } // Slut på metoden
+    // Bild 6: Skapar ett nytt RepairTask-objekt och lägger till i listan
+    public void addRepairTask(String description, double cost) {
+        repairTasks.add(new RepairTask(description, cost));
+    }
 
-    public void setDiagnosticReport(String report) { // Bild 5, Index 1.1: Sätter rapport
-        this.diagnosticReport = report; // Sparar rapporten i attributet
-    } // Slut på metoden
+    // Beräknar den totala summan baserat på alla tillagda moment
+    public double getTotalCost() {
+        double total = 0;
+        for (RepairTask task : repairTasks) {
+            total += task.getCost();
+        }
+        return total;
+    }
 
-    public void setState(String newState) { // Bild 5 Index 1.2 & Bild 7 Index 1.1: Ändrar status
-        this.state = newState; // Sparar den nya statusen (Accepted/ReadyForApproval)
-    } // Slut på metoden
-
-    public void addRepairTask(String description, double cost) { // Bild 6, Index 1.1: Lägger till moment
-        RepairTask repairTask = new RepairTask(description, cost); // Bild 6, Index 1.1.1: Skapar momentet
-        this.addTaskToList(repairTask); // Bild 6, Index 1.1.2: Sparar det i listan
-    } // Slut på metoden
-
-    private void addTaskToList(RepairTask repairTask) { // Bild 6, Index 1.1.2: Intern spar-metod
-        this.repairTasks.add(repairTask); // Lägger till objektet i listan
-    } // Slut på metoden
-
-    public int getOrderId() { return orderId; } // Getter för ordernummer
-    public String getState() { return state; } // Getter för status
-    public Customer getCustomer() { return customer; } // Getter för kund
-} // Slut på klassen
+    // Getters och Setters för att hantera objektets tillstånd
+    public void setProblemDescription(String description) { this.problemDescription = description; }
+    public void setDiagnosticReport(String report) { this.diagnosticReport = report; }
+    public void setState(String newState) { this.state = newState; }
+    
+    public int getOrderId() { return orderId; }
+    public String getState() { return state; }
+    public Customer getCustomer() { return customer; }
+    public Bike getBike() { return bike; }
+    public String getProblemDescription() { return problemDescription; }
+    public String getDiagnosticReport() { return diagnosticReport; }
+    public List<RepairTask> getRepairTasks() { return repairTasks; }
+}

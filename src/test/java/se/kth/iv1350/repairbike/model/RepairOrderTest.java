@@ -1,35 +1,38 @@
-package se.kth.iv1350.repairbike.model; // Anger att testet hör till modell-paketet
+package se.kth.iv1350.repairbike.model;
 
-import org.junit.jupiter.api.*; // Importerar JUnit-annoteringar som @Test och @BeforeEach
-import static org.junit.jupiter.api.Assertions.*; // Importerar påståenden som assertEquals för att kontrollera resultat
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RepairOrderTest { // Start på testklassen för RepairOrder
-    private RepairOrder order; // Deklarerar ett RepairOrder-objekt som ska användas i testerna
+/**
+ * Testklass för att verifiera logiken i RepairOrder.
+ */
+public class RepairOrderTest {
+    private RepairOrder order;
 
-    @BeforeEach // Denna metod körs automatiskt före varje enskilt testfall
-    public void setUp() { // Initieringsmetod för att skapa en fräsch miljö
-        // Skapar en ny order med en testkund och en cykel (null används här för att hålla koden kort)[cite: 3]
-        order = new RepairOrder(new Customer("Sven", "123", "a@b.com", null), null); 
-    } // Slut på setUp
+    @BeforeEach
+    public void setUp() {
+        // Skapar en testmiljö med en kund och en order inför varje test
+        Customer testCustomer = new Customer("Sven", "123", "a@b.com", null);
+        order = new RepairOrder(testCustomer, null);
+    }
 
-    @Test // Markerar att detta är ett testfall som JUnit ska köra[cite: 3]
-    public void testStatusChange() { // Testar logiken för hur orderns status ändras[cite: 3]
-        // Kontrollerar att en nyskapad order har rätt startstatus enligt affärsreglerna[cite: 1]
-        assertEquals("Newly Created", order.getState(), "Startstatus var fel."); 
+    @Test
+    public void testStatusChange() {
+        // Kontrollerar att startstatus är korrekt
+        assertEquals("Newly Created", order.getState(), "Startstatus var fel.");
         
-        // Ändrar statusen på ordern till 'Accepted' (simulerar Bild 7 i din design)[cite: 1]
-        order.setState("Accepted"); 
-        
-        // Verifierar att attributet i objektet faktiskt har ändrats till det förväntade värdet[cite: 3]
-        assertEquals("Accepted", order.getState(), "Status ändrades inte korrekt."); 
-    } // Slut på testStatusChange
+        // Simulerar godkännande av order och verifierar statusändring
+        order.setState("Accepted");
+        assertEquals("Accepted", order.getState(), "Status ändrades inte korrekt.");
+    }
 
-    @Test // Markerar nästa testfall[cite: 3]
-    public void testAddRepairTask() { // Testar att det går att lägga till ett arbetsmoment[cite: 3]
-        // Anropar metoden för att lägga till ett moment och pris (testar logik i Bild 6)
-        order.addRepairTask("Service", 100.0); 
+    @Test
+    public void testAddRepairTask() {
+        // Verifierar att det går att lägga till arbetsmoment utan fel
+        order.addRepairTask("Service", 100.0);
+        assertNotNull(order, "Ordern bör fortfarande existera efter tillagt moment.");
         
-        // Testet godkänns automatiskt om raden ovan körs utan att programmet kraschar[cite: 3]
-        assertNotNull(order, "Ordern bör fortfarande existera efter tillagt moment."); 
-    } // Slut på testAddRepairTask
-} // Slut på klassen RepairOrderTest
+        // Verifierar att kostnaden summeras (om getTotalCost finns i din RepairOrder)
+        assertEquals(100.0, order.getTotalCost(), 0.01, "Kostnaden för momentet registrerades inte korrekt.");
+    }
+}

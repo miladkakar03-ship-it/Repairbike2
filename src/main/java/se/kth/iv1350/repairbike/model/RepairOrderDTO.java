@@ -1,14 +1,17 @@
-package se.kth.iv1350.repairbike.model; // Modell-lagret
+package se.kth.iv1350.repairbike.model;
 
-public class RepairOrderDTO { // Dataöverföringsobjekt för order
-    private final int orderId; // Oföränderligt ID
-    private final String status; // Oföränderlig status
+/**
+ * En förenklad version av ordern som skickas till vyn för att visa status och ID.
+ */
+public class RepairOrderDTO {
+    private final int orderId;
+    private final String status;
 
-    public RepairOrderDTO(RepairOrder order) { // Konstruktor
-        this.orderId = order.getOrderId(); // Kopierar ID från ordern
-        this.status = order.getState(); // Kopierar statusen (Accepted, etc)
-    } // Slut på konstruktor
+    public RepairOrderDTO(RepairOrder order) {
+        this.orderId = order.getOrderId();
+        this.status = order.getState();
+    }
 
-    public int getOrderId() { return orderId; } // Getter för vyn
-    public String getStatus() { return status; } // Getter för vyn
-} // Slut på klassen
+    public int getOrderId() { return orderId; }
+    public String getStatus() { return status; }
+}
