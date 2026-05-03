@@ -12,7 +12,7 @@ public class CustomerRegistry {
     private List<Customer> customers = new ArrayList<>();
 
     public CustomerRegistry() {
-        // Initierar testdata för att kunna köra scenariot i Bild 1
+        // Initierar testdata för att kunna köra scenariot i systemoperation 1
         Bike testBike = new Bike("Yosemite", "Electric S1", "SN12345");
         customers.add(new Customer("User", "12345678", "Usern@gmail.se", testBike));
     }
