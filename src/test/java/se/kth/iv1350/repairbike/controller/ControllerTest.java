@@ -33,7 +33,7 @@ public class ControllerTest {
      */
     @Test
     public void testFindCustomer() {
-        String phoneNumber = "0701112233"; 
+        String phoneNumber = "12345678"; 
         CustomerDTO result = instance.findCustomer(phoneNumber);
         assertNotNull(result, "Kunden borde hittas i registret.");
     }
@@ -44,7 +44,7 @@ public class ControllerTest {
      */
     @Test
     public void testStartNewRepair() {
-        CustomerDTO customer = instance.findCustomer("0701112233");
+        CustomerDTO customer = instance.findCustomer("12345678");
         RepairOrderDTO result = instance.startNewRepair(customer);
         assertNotNull(result, "En RepairOrderDTO borde ha skapats.");
     }
@@ -55,7 +55,7 @@ public class ControllerTest {
      */
     @Test
     public void testAddDiagnosticReport() {
-        CustomerDTO customer = instance.findCustomer("0701112233");
+        CustomerDTO customer = instance.findCustomer("12345678");
         RepairOrderDTO newOrder = instance.startNewRepair(customer); 
         
         instance.findRepairOrder(newOrder.getOrderId());
@@ -70,7 +70,7 @@ public class ControllerTest {
      */
     @Test
     public void testConfirmRepairOrder() {
-        CustomerDTO customer = instance.findCustomer("0701112233");
+        CustomerDTO customer = instance.findCustomer("12345678");
         RepairOrderDTO newOrder = instance.startNewRepair(customer);
         instance.findRepairOrder(newOrder.getOrderId());
         
