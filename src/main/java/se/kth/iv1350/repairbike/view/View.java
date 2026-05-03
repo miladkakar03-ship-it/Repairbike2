@@ -18,7 +18,7 @@ public class View {
      */
     public void run() {
         // Steg 1: Kontrollera om kund finns
-        String phoneNumber = "0701112233";
+        String phoneNumber = "12345678";
         CustomerDTO customerDTO = controller.findCustomer(phoneNumber);
         if (customerDTO == null) return;
 
